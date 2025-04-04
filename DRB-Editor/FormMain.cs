@@ -1,6 +1,7 @@
 ﻿using SoulsFormats;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -165,22 +166,32 @@ namespace DRB_Editor
             string dcx = version == DRB.DRBVersion.DarkSoulsRemastered ? ".dcx" : "";
             string dir = Path.GetDirectoryName(path);
             var textureData = new List<Bitmap>();
+            Debug.WriteLine(drb.BigEndian);
             try
             {
                 TPF menuTPF = TPF.Read($@"{dir}\menu.tpf{dcx}");
                 var textureNames = menuTPF.Textures.Select(t => t.Name);
 
                 var textureBytes = new Dictionary<string, byte[]>();
-                for (int i = 0; i < 10; i++)
+                if (!drb.BigEndian) 
                 {
-                    string tpfPath = $@"{dir}\menu_{i}.tpf{dcx}";
-                    if (!File.Exists(tpfPath))
-                        break;
+                    for (int i = 0; i < 10; i++)
+                    {
+                        string tpfPath = $@"{dir}\menu_{i}.tpf{dcx}";
+                        if (!File.Exists(tpfPath))
+                            break;
 
-                    TPF tpf = TPF.Read(tpfPath);
-                    foreach (TPF.Texture tex in tpf.Textures)
-                        textureBytes[tex.Name] = tex.Bytes;
+                        TPF tpf = TPF.Read(tpfPath);
+                        foreach (TPF.Texture tex in tpf.Textures)
+                            textureBytes[tex.Name] = tex.Bytes;
+                    }
                 }
+                else //des loads actual textures from menu.tpf, ds1 grabs texture names from there
+                {
+                    foreach (TPF.Texture tex in menuTPF.Textures)
+                        textureBytes[tex.Name] = tex.Headerize();
+                }
+                
 
                 foreach (string name in textureNames)
                     textureData.Add(PfimUtil.LoadTexture(textureBytes[name]));
@@ -198,10 +209,10 @@ namespace DRB_Editor
                 BND3 paramBnd = BND3.Read(paramPath);
                 PARAM param = PARAM.Read(paramBnd.Files.Find(f => f.Name.Contains("MenuColorTableParam")).Bytes);
                 var def = new PARAMDEF();
-                def.Fields.Add(new PARAMDEF.Field(PARAMDEF.DefType.u8, "r"));
-                def.Fields.Add(new PARAMDEF.Field(PARAMDEF.DefType.u8, "g"));
-                def.Fields.Add(new PARAMDEF.Field(PARAMDEF.DefType.u8, "b"));
-                def.Fields.Add(new PARAMDEF.Field(PARAMDEF.DefType.u8, "a"));
+                def.Fields.Add(new PARAMDEF.Field(def, PARAMDEF.DefType.u8, "r"));
+                def.Fields.Add(new PARAMDEF.Field(def, PARAMDEF.DefType.u8, "g"));
+                def.Fields.Add(new PARAMDEF.Field(def, PARAMDEF.DefType.u8, "b"));
+                def.Fields.Add(new PARAMDEF.Field(def, PARAMDEF.DefType.u8, "a"));
                 param.ApplyParamdef(def);
 
                 foreach (PARAM.Row row in param.Rows)
@@ -218,8 +229,9 @@ namespace DRB_Editor
                 ShowError($"Failed to load params:\n{paramPath}\n\n{ex}", silent);
                 return;
             }
-
-            string fmgPath = $@"{dir}\..\msg\english\menu.msgbnd{dcx}";
+            string na = "";
+            if (drb.BigEndian) na = "na_";
+            string fmgPath = $@"{dir}\..\msg\{na}english\menu.msgbnd{dcx}";
             var fmgStrings = new Dictionary<int, string>();
             try
             {
@@ -331,6 +343,14 @@ namespace DRB_Editor
         private void Pgd_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
         {
             PreviewForm?.DrawDialog((DRB.Dlg)lbxDlgs.SelectedItem, TextureData, PaletteColors, FmgStrings);
+        }
+
+        private void TransformToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (lbxDlgos.SelectedIndex != -1)
+            {
+
+            }
         }
     }
 }
