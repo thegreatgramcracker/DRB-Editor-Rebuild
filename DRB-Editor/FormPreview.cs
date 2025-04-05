@@ -27,6 +27,12 @@ namespace DRB_Editor
 
         public void DrawDialog(DRB.Dlg dialog, List<Bitmap> textureData, List<Color> paletteColors, Dictionary<int, string> fmgStrings)
         {
+            if (dialog.RightEdge - dialog.LeftEdge == 0 || dialog.TopEdge - dialog.BottomEdge == 0)
+            {
+                //no ui
+                pbxDialog.Image = new Bitmap(1280, 720);
+                return;
+            }
             Text = dialog.Name;
             TextureData = textureData;
             PaletteColors = paletteColors;

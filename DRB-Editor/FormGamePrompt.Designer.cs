@@ -40,7 +40,7 @@
             this.btnPtde.Name = "btnPtde";
             this.btnPtde.Size = new System.Drawing.Size(100, 23);
             this.btnPtde.TabIndex = 0;
-            this.btnPtde.Text = "Prepare to Die";
+            this.btnPtde.Text = "DeS/PTDE";
             this.btnPtde.UseVisualStyleBackColor = true;
             this.btnPtde.Click += new System.EventHandler(this.BtnPtde_Click);
             // 
@@ -64,7 +64,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(206, 58);
             this.label1.TabIndex = 2;
-            this.label1.Text = "Is this DRB from Prepare to Die Edition,\r\nor Dark Souls Remastered?";
+            this.label1.Text = "Is this DRB from Demon\'s Souls/Prepare to Die Edition, or Dark Souls Remastered?";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // FormGamePrompt

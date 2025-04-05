@@ -51,6 +51,8 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.statusStripLblPath = new System.Windows.Forms.ToolStripStatusLabel();
             this.ofdDrb = new System.Windows.Forms.OpenFileDialog();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -64,7 +66,7 @@
             this.pgdDlg.Location = new System.Drawing.Point(223, 3);
             this.pgdDlg.Name = "pgdDlg";
             this.pgdDlg.PropertySort = System.Windows.Forms.PropertySort.NoSort;
-            this.pgdDlg.Size = new System.Drawing.Size(225, 231);
+            this.pgdDlg.Size = new System.Drawing.Size(225, 222);
             this.pgdDlg.TabIndex = 1;
             this.pgdDlg.ToolbarVisible = false;
             this.pgdDlg.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.Pgd_PropertyValueChanged);
@@ -80,7 +82,7 @@
             this.lbxDlgs.Name = "lbxDlgs";
             this.tableLayoutPanel1.SetRowSpan(this.lbxDlgs, 3);
             this.lbxDlgs.ScrollAlwaysVisible = true;
-            this.lbxDlgs.Size = new System.Drawing.Size(214, 481);
+            this.lbxDlgs.Size = new System.Drawing.Size(214, 463);
             this.lbxDlgs.Sorted = true;
             this.lbxDlgs.TabIndex = 0;
             this.lbxDlgs.SelectedValueChanged += new System.EventHandler(this.LbxDlgs_SelectedValueChanged);
@@ -92,6 +94,7 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 220F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Controls.Add(this.label3, 1, 3);
             this.tableLayoutPanel1.Controls.Add(this.pgdDlgoShape, 3, 2);
             this.tableLayoutPanel1.Controls.Add(this.lbxDlgos, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.pgdDlgShape, 1, 2);
@@ -100,25 +103,28 @@
             this.tableLayoutPanel1.Controls.Add(this.pgdDlg, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.lblDlgShape, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.lblDlgoShape, 3, 1);
+            this.tableLayoutPanel1.Controls.Add(this.label1, 3, 3);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 24);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 3;
+            this.tableLayoutPanel1.RowCount = 4;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 18F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(902, 487);
             this.tableLayoutPanel1.TabIndex = 3;
+            this.tableLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint);
             // 
             // pgdDlgoShape
             // 
             this.pgdDlgoShape.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pgdDlgoShape.Enabled = false;
             this.pgdDlgoShape.HelpVisible = false;
-            this.pgdDlgoShape.Location = new System.Drawing.Point(674, 253);
+            this.pgdDlgoShape.Location = new System.Drawing.Point(674, 244);
             this.pgdDlgoShape.Name = "pgdDlgoShape";
             this.pgdDlgoShape.PropertySort = System.Windows.Forms.PropertySort.NoSort;
-            this.pgdDlgoShape.Size = new System.Drawing.Size(225, 231);
+            this.pgdDlgoShape.Size = new System.Drawing.Size(225, 222);
             this.pgdDlgoShape.TabIndex = 5;
             this.pgdDlgoShape.ToolbarVisible = false;
             this.pgdDlgoShape.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.Pgd_PropertyValueChanged);
@@ -134,7 +140,7 @@
             this.lbxDlgos.Name = "lbxDlgos";
             this.tableLayoutPanel1.SetRowSpan(this.lbxDlgos, 3);
             this.lbxDlgos.ScrollAlwaysVisible = true;
-            this.lbxDlgos.Size = new System.Drawing.Size(214, 481);
+            this.lbxDlgos.Size = new System.Drawing.Size(214, 463);
             this.lbxDlgos.TabIndex = 3;
             this.lbxDlgos.SelectedValueChanged += new System.EventHandler(this.LbxDlgos_SelectedValueChanged);
             // 
@@ -143,10 +149,10 @@
             this.pgdDlgShape.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pgdDlgShape.Enabled = false;
             this.pgdDlgShape.HelpVisible = false;
-            this.pgdDlgShape.Location = new System.Drawing.Point(223, 253);
+            this.pgdDlgShape.Location = new System.Drawing.Point(223, 244);
             this.pgdDlgShape.Name = "pgdDlgShape";
             this.pgdDlgShape.PropertySort = System.Windows.Forms.PropertySort.NoSort;
-            this.pgdDlgShape.Size = new System.Drawing.Size(225, 231);
+            this.pgdDlgShape.Size = new System.Drawing.Size(225, 222);
             this.pgdDlgShape.TabIndex = 2;
             this.pgdDlgShape.ToolbarVisible = false;
             this.pgdDlgShape.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.Pgd_PropertyValueChanged);
@@ -159,7 +165,7 @@
             this.pgdDlgo.Location = new System.Drawing.Point(674, 3);
             this.pgdDlgo.Name = "pgdDlgo";
             this.pgdDlgo.PropertySort = System.Windows.Forms.PropertySort.NoSort;
-            this.pgdDlgo.Size = new System.Drawing.Size(225, 231);
+            this.pgdDlgo.Size = new System.Drawing.Size(225, 222);
             this.pgdDlgo.TabIndex = 4;
             this.pgdDlgo.ToolbarVisible = false;
             this.pgdDlgo.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.Pgd_PropertyValueChanged);
@@ -167,7 +173,7 @@
             // lblDlgShape
             // 
             this.lblDlgShape.AutoSize = true;
-            this.lblDlgShape.Location = new System.Drawing.Point(222, 237);
+            this.lblDlgShape.Location = new System.Drawing.Point(222, 228);
             this.lblDlgShape.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblDlgShape.Name = "lblDlgShape";
             this.lblDlgShape.Size = new System.Drawing.Size(0, 13);
@@ -176,7 +182,7 @@
             // lblDlgoShape
             // 
             this.lblDlgoShape.AutoSize = true;
-            this.lblDlgoShape.Location = new System.Drawing.Point(673, 237);
+            this.lblDlgoShape.Location = new System.Drawing.Point(673, 228);
             this.lblDlgoShape.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblDlgoShape.Name = "lblDlgoShape";
             this.lblDlgoShape.Size = new System.Drawing.Size(0, 13);
@@ -209,7 +215,7 @@
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
             this.openToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.openToolStripMenuItem.Text = "&Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.OpenToolStripMenuItem_Click);
             // 
@@ -218,7 +224,7 @@
             this.saveToolStripMenuItem.Enabled = false;
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.saveToolStripMenuItem.Text = "&Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.SaveToolStripMenuItem_Click);
             // 
@@ -226,7 +232,7 @@
             // 
             this.restoreToolStripMenuItem.Name = "restoreToolStripMenuItem";
             this.restoreToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
-            this.restoreToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.restoreToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.restoreToolStripMenuItem.Text = "Restore";
             this.restoreToolStripMenuItem.Click += new System.EventHandler(this.RestoreToolStripMenuItem_Click);
             // 
@@ -267,10 +273,11 @@
             // 
             // transformToolStripMenuItem
             // 
+            this.transformToolStripMenuItem.CheckOnClick = true;
             this.transformToolStripMenuItem.Name = "transformToolStripMenuItem";
             this.transformToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.transformToolStripMenuItem.Text = "Transform...";
-            this.transformToolStripMenuItem.Click += new System.EventHandler(this.TransformToolStripMenuItem_Click);
+            this.transformToolStripMenuItem.CheckedChanged += new System.EventHandler(this.transformToolStripMenuItem_CheckedChanged);
             // 
             // statusStrip
             // 
@@ -294,6 +301,27 @@
             // 
             this.ofdDrb.FileName = "menu.drb";
             this.ofdDrb.Filter = "DRB files|*.drb*";
+            // 
+            // label1
+            // 
+            this.label1.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(674, 471);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(37, 13);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "DLGO";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
+            // 
+            // label3
+            // 
+            this.label3.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(223, 471);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(29, 13);
+            this.label3.TabIndex = 10;
+            this.label3.Text = "DLG";
             // 
             // FormMain
             // 
@@ -345,6 +373,8 @@
         private System.Windows.Forms.Label lblDlgoShape;
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem transformToolStripMenuItem;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label3;
     }
 }
 

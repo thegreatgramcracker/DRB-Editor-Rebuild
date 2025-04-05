@@ -24,6 +24,125 @@ namespace DRB_Editor
 
         private FormTextures TextureForm;
         private FormPreview PreviewForm;
+        private FormTransform TransformForm;
+
+
+        public short SelectedDLGTopEdge
+        {
+            get
+            {
+                var dlg = (DRB.Dlg)lbxDlgs.SelectedItem;
+                return dlg.Shape.TopEdge;
+            }
+            set
+            {
+                var dlg = (DRB.Dlg)lbxDlgs.SelectedItem;
+                dlg.Shape.TopEdge = value;
+                dlg.TopEdge = value;
+            }
+        }
+        public short SelectedDLGLeftEdge
+        {
+            get
+            {
+                var dlg = (DRB.Dlg)lbxDlgs.SelectedItem;
+                return dlg.Shape.LeftEdge;
+            }
+            set
+            {
+                var dlg = (DRB.Dlg)lbxDlgs.SelectedItem;
+                dlg.Shape.LeftEdge = value;
+                dlg.LeftEdge = value;
+            }
+        }
+        public short SelectedDLGRightEdge
+        {
+            get
+            {
+                var dlg = (DRB.Dlg)lbxDlgs.SelectedItem;
+                return dlg.Shape.RightEdge;
+            }
+            set
+            {
+                var dlg = (DRB.Dlg)lbxDlgs.SelectedItem;
+                dlg.Shape.RightEdge = value;
+                dlg.RightEdge = value;
+            }
+        }
+        public short SelectedDLGBottomEdge
+        {
+            get
+            {
+                var dlg = (DRB.Dlg)lbxDlgs.SelectedItem;
+                return dlg.Shape.BottomEdge;
+            }
+            set
+            {
+                var dlg = (DRB.Dlg)lbxDlgs.SelectedItem;
+                dlg.Shape.BottomEdge = value;
+                dlg.BottomEdge = value;
+            }
+        }
+        public short SelectedDLGOTopEdge
+        {
+            get
+            {
+                var dlgo = (DRB.Dlgo)lbxDlgos.SelectedItem;
+                return dlgo.Shape.TopEdge;
+            }
+            set
+            {
+                var dlgo = (DRB.Dlgo)lbxDlgos.SelectedItem;
+                dlgo.Shape.TopEdge = value;
+            }
+        }
+        public short SelectedDLGOLeftEdge
+        {
+            get
+            {
+                var dlgo = (DRB.Dlgo)lbxDlgos.SelectedItem;
+                return dlgo.Shape.LeftEdge;
+            }
+            set
+            {
+                var dlgo = (DRB.Dlgo)lbxDlgos.SelectedItem;
+                dlgo.Shape.LeftEdge = value;
+            }
+        }
+        public short SelectedDLGORightEdge
+        {
+            get
+            {
+                var dlgo = (DRB.Dlgo)lbxDlgos.SelectedItem;
+                return dlgo.Shape.RightEdge;
+            }
+            set
+            {
+                var dlgo = (DRB.Dlgo)lbxDlgos.SelectedItem;
+                dlgo.Shape.RightEdge = value;
+            }
+        }
+        public short SelectedDLGOBottomEdge
+        {
+            get
+            {
+                var dlgo = (DRB.Dlgo)lbxDlgos.SelectedItem;
+                return dlgo.Shape.BottomEdge;
+            }
+            set
+            {
+                var dlgo = (DRB.Dlgo)lbxDlgos.SelectedItem;
+                dlgo.Shape.BottomEdge = value;
+            }
+        }
+
+        public void RefreshDLGProperties()
+        {
+            pgdDlgShape.Refresh();
+            pgdDlg.Refresh();
+            pgdDlgo.Refresh();
+            pgdDlgoShape.Refresh();
+        }
 
         public FormMain()
         {
@@ -140,6 +259,21 @@ namespace DRB_Editor
             }
         }
 
+        private void transformToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
+        {
+            if (transformToolStripMenuItem.Checked)
+            {
+                TransformForm = new FormTransform(this);
+                TransformForm.FormClosed += Transformorm_FormClosed;
+                TransformForm.Show();
+            }
+            else
+            {
+                TransformForm.Close();
+                TransformForm = null;
+            }
+        }
+
         private void PreviewForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             previewToolStripMenuItem.Checked = false;
@@ -148,6 +282,11 @@ namespace DRB_Editor
         private void TextureForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             texturesToolStripMenuItem.Checked = false;
+        }
+
+        private void Transformorm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            transformToolStripMenuItem.Checked = false;
         }
 
         private void OpenDRB(string path, DRB.DRBVersion version, bool silent = false)
@@ -258,7 +397,7 @@ namespace DRB_Editor
             PaletteColors = paletteColors;
             FmgStrings = fmgStrings;
 
-            statusStripLblPath.Text = $"[{(version == DRB.DRBVersion.DarkSoulsRemastered ? "DSR" : "PTDE")}] {path}";
+            statusStripLblPath.Text = $"[{(version == DRB.DRBVersion.DarkSoulsRemastered ? "DSR" : "PTDE/DeS")}] {path}";
             lbxDlgs.Enabled = Drb.Dlgs.Count > 0;
             lbxDlgs.ClearSelected();
             lbxDlgs.DisplayMember = "Name";
@@ -347,10 +486,27 @@ namespace DRB_Editor
 
         private void TransformToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            Debug.WriteLine(lbxDlgos.Text);
+            Debug.WriteLine(lbxDlgs.Text);
             if (lbxDlgos.SelectedIndex != -1)
             {
 
             }
+        }
+
+        private void editToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
