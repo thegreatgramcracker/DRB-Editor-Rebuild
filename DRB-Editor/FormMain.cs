@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Media;
 using System.Reflection;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Forms;
 
 namespace DRB_Editor
@@ -25,6 +26,8 @@ namespace DRB_Editor
         private FormTextures TextureForm;
         private FormPreview PreviewForm;
         private FormTransform TransformForm;
+
+        DRB.Dlgo copiedDlgo = null;
 
 
         public short SelectedDLGTopEdge
@@ -195,7 +198,11 @@ namespace DRB_Editor
         {
             try
             {
-                SFUtil.Backup(DrbPath);
+                string bak = DrbPath + ".bak";
+                if (!File.Exists(bak))
+                {
+                    File.Copy(DrbPath, bak, false);
+                }
                 Drb.Write(DrbPath);
                 SystemSounds.Asterisk.Play();
             }
@@ -405,6 +412,10 @@ namespace DRB_Editor
             lbxDlgos.DisplayMember = "Name";
             lbxDlgs.DataSource = Drb.Dlgs;
             saveToolStripMenuItem.Enabled = true;
+            dlgoPasteButton.Enabled = false;
+            dlgoCopyLabel.Text = "";
+            dlgoReorderGroupbox.Enabled = true;
+            dlgoEditGroupbox.Enabled = true;
 
             texturesToolStripMenuItem.Enabled = true;
             TextureForm?.SetTextures(Drb.Textures);
@@ -494,18 +505,126 @@ namespace DRB_Editor
             }
         }
 
-        private void editToolStripMenuItem_Click(object sender, EventArgs e)
+        private void dlgoUpButton_Click(object sender, EventArgs e)
         {
-
+            MoveDlgoItem(-1);
         }
 
-        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
-        {
 
+
+
+        private void dlgoDownButton_Click(object sender, EventArgs e)
+        {
+            MoveDlgoItem(1);
         }
 
-        private void label1_Click(object sender, EventArgs e)
+        void MoveDlgoItem(int amount)
         {
+            if (lbxDlgos.SelectedItem == null) return;
+            var dlg = (DRB.Dlg)lbxDlgs.SelectedItem;
+            var dlgo = (DRB.Dlgo)lbxDlgos.SelectedItem;
+            int startIndex = dlg.Dlgos.IndexOf(dlgo);
+
+            if (startIndex + amount >= 0 && startIndex + amount < dlg.Dlgos.Count)
+            {
+                dlg.Dlgos.RemoveAt(startIndex);
+                dlg.Dlgos.Insert(startIndex + amount, dlgo);
+
+                lbxDlgos.DataSource = null;
+                lbxDlgos.DataSource = dlg.Dlgos;
+                lbxDlgos.DisplayMember = "Name";
+                lbxDlgos.SelectedIndex = startIndex + amount;
+            }
+        }
+
+        private void dlgoDuplicateButton_Click(object sender, EventArgs e)
+        {
+            if (lbxDlgos.SelectedItem == null) return;
+            var dlg = (DRB.Dlg)lbxDlgs.SelectedItem;
+            int dlgoIndex = dlg.Dlgos.IndexOf((DRB.Dlgo)lbxDlgos.SelectedItem);
+            DRB.Dlgo dlgoCopy = CopyDLGO(dlg.Dlgos[dlgoIndex]);
+            
+            InsertDlgo(dlgoIndex + 1, dlgoCopy);
+        }
+
+        private void dlgoDeleteButton_Click(object sender, EventArgs e)
+        {
+            if (lbxDlgos.SelectedItem == null) return;
+            var dlg = (DRB.Dlg)lbxDlgs.SelectedItem;
+            int dlgoIndex = dlg.Dlgos.IndexOf((DRB.Dlgo)lbxDlgos.SelectedItem);
+
+            dlg.Dlgos.RemoveAt(dlgoIndex);
+
+            lbxDlgos.DataSource = null;
+            lbxDlgos.DataSource = dlg.Dlgos;
+            lbxDlgos.DisplayMember = "Name";
+            if (dlg.Dlgos.Count > 0)
+            {
+                if (dlgoIndex < dlg.Dlgos.Count)
+                {
+                    lbxDlgos.SelectedIndex = dlgoIndex;
+                }
+                else
+                {
+                    lbxDlgos.SelectedIndex = dlg.Dlgos.Count - 1;
+                }
+            }
+            
+            
+        }
+
+        DRB.Dlgo CopyDLGO(DRB.Dlgo sourceDlgo)
+        {
+            DRB.Dlgo copyDlgo = null;
+            using (MemoryStream ms = new MemoryStream())
+            {
+                BinaryFormatter formatter = new BinaryFormatter();
+                formatter.Serialize(ms, sourceDlgo);
+                ms.Position = 0;
+                copyDlgo = (DRB.Dlgo)formatter.Deserialize(ms);
+            }
+            return copyDlgo;
+        }
+
+
+
+
+        void InsertDlgo(int index, DRB.Dlgo sourceDlgo)
+        {
+            var dlg = (DRB.Dlg)lbxDlgs.SelectedItem;
+
+
+            string copyName = sourceDlgo.Name;
+
+            for (int i = 1; dlg.Dlgos.Find(n => n.Name == copyName) != null; i++)
+            {
+                copyName = sourceDlgo.Name + "(" + i + ")";
+            }
+            sourceDlgo.Name = copyName;
+
+            dlg.Dlgos.Insert(index, sourceDlgo);
+            lbxDlgos.DataSource = null;
+            lbxDlgos.DataSource = dlg.Dlgos;
+            lbxDlgos.DisplayMember = "Name";
+        }
+
+        private void dlgoCopyButton_Click(object sender, EventArgs e)
+        {
+            if (lbxDlgos.SelectedItem == null) return;
+            var dlg = (DRB.Dlg)lbxDlgs.SelectedItem;
+            copiedDlgo = CopyDLGO(dlg.Dlgos[lbxDlgos.SelectedIndex]);
+            dlgoPasteButton.Enabled = true;
+            dlgoCopyLabel.Text = copiedDlgo.Name;
+        }
+
+        private void dlgoPasteButton_Click(object sender, EventArgs e)
+        {
+            if (copiedDlgo != null)
+            {
+                var dlg = (DRB.Dlg)lbxDlgs.SelectedItem;
+                int dlgoIndex = dlg.Dlgos.IndexOf((DRB.Dlgo)lbxDlgos.SelectedItem);
+                InsertDlgo(dlgoIndex + 1, CopyDLGO(copiedDlgo));
+            }
 
         }
     }
